@@ -4,6 +4,9 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
 import config
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def ingest_data():
     file_path = config.TXT_FILE_PATH

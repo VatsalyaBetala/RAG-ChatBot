@@ -3,6 +3,10 @@ from langchain_community.embeddings import OpenAIEmbeddings
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain.chains import RetrievalQA
 import config
+import os 
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def load_chatbot():
     embeddings = OpenAIEmbeddings(model=config.EMBEDDING_MODEL)
