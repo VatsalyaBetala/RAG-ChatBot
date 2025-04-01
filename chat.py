@@ -37,6 +37,16 @@ def load_chat_history():
     
     return formatted_history
 
+def convert_to_langchain_format(formatted_history):
+    langchain_history = []
+    for message in formatted_history: 
+        if message['role'] == 'user': 
+            langchain_history.append(HumanMessage(content=message['content']))
+        if message['role'] == 'assistant': 
+            langchain_history.append(AIMessage(content=message["content"]))
+    
+    return langchain_history
+
 def clear_chat_history():
     redis_client.delete(REDIS_CHAT_HISTORY_KEY)
 
@@ -56,7 +66,8 @@ def load_chatbot():
 def ask_question(query):
     """Handles user queries, stores responses, and retrieves history."""
     qa_chain = load_chatbot()
-    chat_history = load_chat_history()
+    json_history = load_chat_history()
+    chat_history = convert_to_langchain_format(json_history)
     chat_history.append(HumanMessage(content=query))
 
     response = qa_chain.invoke({"question": query, "chat_history": chat_history})
